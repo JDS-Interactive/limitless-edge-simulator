@@ -1,0 +1,70 @@
+LIMITLESS EDGE SIMULATOR
+PROPRIETARY LICENSE AGREEMENT
+
+Copyright (c) 2026 Jared De Santis
+All rights reserved.
+
+---
+
+1. PERMITTED USE
+
+This software and its source code are made available for the purpose of:
+- Viewing
+- Examination
+- Educational reference
+
+Users are permitted to access and review the code for personal, non-commercial understanding only.
+
+---
+
+2. RESTRICTIONS
+
+Without explicit prior written permission from the author, the following actions are strictly prohibited:
+
+- Copying the software in whole or in part
+- Modifying or creating derivative works
+- Redistributing the software or any portion of it
+- Using the software for commercial purposes
+- Repackaging or reselling the software
+- Deploying modified or unmodified versions as a product or service
+
+---
+
+3. OWNERSHIP
+
+All rights, title, and interest in and to the software remain the exclusive property of:
+
+Jared De Santis
+
+This includes all:
+- Source code
+- Design concepts
+- Algorithms
+- Branding and associated materials
+
+---
+
+4. PERMISSION REQUESTS
+
+For licensing inquiries, permissions, or commercial use requests, please contact:
+
+Jared De Santis  
+Email: jedarch@icloud.com
+
+---
+
+5. DISCLAIMER
+
+This software is provided "as is", without warranty of any kind, express or implied.
+
+The author shall not be held liable for any damages arising from the use or misuse of this software.
+
+---
+
+6. TERMINATION
+
+Any unauthorized use of this software automatically terminates the rights granted under this license.
+
+---
+
+By accessing this software, you acknowledge and agree to the terms outlined above.

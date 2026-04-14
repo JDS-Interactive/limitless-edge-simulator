@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Limitless Edge Simulator</title>
+  <!-- Favicon -->
+  <link rel="icon" href="./assets/favicon.ico" sizes="any">
+
+  <!-- PNG fallback (recommended) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/icon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/icon-16.png">
+
+  <!-- Apple Touch Icon (fixes your warning) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/icon-180.png">
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <h1>Limitless Edge Simulator</h1>
+        <p class="subtext">Train with strategy, risk controls, and simulated market scenarios.</p>
+      </div>
+
+      <div class="topbar-actions">
+        <button id="nextCandleBtn" class="btn">Next Candle</button>
+        <button id="playPauseBtn" class="btn secondary">Auto Step: Off</button>
+        <button id="resetBtn" class="btn secondary">Reset</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel hero-panel">
+        <div class="hero-grid">
+          <div>
+            <h2 id="symbolHeading">AAPL</h2>
+            <p class="subtext">Phase 1.3 UI refinement</p>
+          </div>
+
+          <div class="hero-badges">
+            <span class="mini-badge">XP: <strong id="xpValue">0</strong></span>
+            <span class="mini-badge">Level: <strong id="levelValue">1</strong></span>
+            <span class="mini-badge">Scenario: <strong id="scenarioBadge">Bull Run</strong></span>
+            <span class="mini-badge">Auto Sim: <strong id="autoSimBadge">Off</strong></span>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <span>Last Price</span>
+            <strong id="lastPrice">$0.00</strong>
+          </div>
+          <div class="stat-card">
+            <span>Cash</span>
+            <strong id="cashValue">$0.00</strong>
+          </div>
+          <div class="stat-card">
+            <span>Equity</span>
+            <strong id="equityValue">$0.00</strong>
+          </div>
+          <div class="stat-card">
+            <span>Position</span>
+            <strong id="positionValue">0</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="main-grid">
+        <section class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Market Chart</h3>
+              <div class="subtext">Candlestick stream with simulated scenarios</div>
+            </div>
+            <div class="header-mini-stats">
+              <span class="mini-badge">Replay: <strong id="replayStatus">Off</strong></span>
+              <span class="mini-badge">Trades: <strong id="totalTradesValue">0</strong></span>
+              <span class="mini-badge">Wins: <strong id="winningTradesValue">0</strong></span>
+            </div>
+          </div>
+
+          <div class="chart-wrap">
+            <canvas id="chartCanvas" width="1200" height="420"></canvas>
+          </div>
+
+          <div class="indicator-row">
+            <div class="indicator-pill">SMA(10): <strong id="sma10">-</strong></div>
+            <div class="indicator-pill">EMA(10): <strong id="ema10">-</strong></div>
+            <div class="indicator-pill">RSI(14): <strong id="rsi14">-</strong></div>
+            <div class="indicator-pill">MACD: <strong id="macd">-</strong></div>
+          </div>
+        </section>
+
+        <aside class="sidebar">
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Profile</h3>
+            </div>
+
+            <label class="field">
+              <span>Player Profile</span>
+              <select id="profileSelect"></select>
+            </label>
+
+            <div class="button-row">
+              <button id="newProfileBtn" class="btn secondary">New Profile</button>
+              <button id="saveProfileBtn" class="btn secondary">Save Profile</button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Trade Controls</h3>
+            </div>
+
+            <label class="field">
+              <span>Symbol</span>
+              <select id="symbolSelect">
+                <option value="AAPL">AAPL</option>
+                <option value="MSFT">MSFT</option>
+                <option value="NVDA">NVDA</option>
+                <option value="TSLA">TSLA</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Scenario</span>
+              <select id="scenarioSelect"></select>
+            </label>
+
+            <label class="field">
+              <span>Strategy Preset</span>
+              <select id="strategyPresetSelect">
+                <option value="none">Manual Only</option>
+                <option value="rsi_reversal">RSI Reversal</option>
+                <option value="trend_follow">Trend Follow</option>
+                <option value="momentum_macd">Momentum MACD</option>
+                <option value="breakout_20">Breakout 20</option>
+              </select>
+            </label>
+
+            <label class="field">
+              <span>Quantity</span>
+              <input id="qtyInput" type="number" min="1" value="1" />
+            </label>
+
+            <div class="risk-grid">
+              <label class="field">
+                <span>Stop Loss %</span>
+                <input id="stopLossInput" type="number" min="0" step="0.1" value="4" />
+              </label>
+
+              <label class="field">
+                <span>Take Profit %</span>
+                <input id="takeProfitInput" type="number" min="0" step="0.1" value="8" />
+              </label>
+            </div>
+
+            <div class="button-row">
+              <button id="buyBtn" class="btn buy">Buy</button>
+              <button id="sellBtn" class="btn sell">Sell</button>
+            </div>
+
+            <div class="button-row">
+              <button id="runStrategyBtn" class="btn secondary">Run Strategy</button>
+              <button id="autoSimToggleBtn" class="btn secondary">Auto Sim: Off</button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Replay</h3>
+            </div>
+
+            <div class="button-row">
+              <button id="replayToggleBtn" class="btn secondary">Replay: Off</button>
+              <button id="rewindBtn" class="btn secondary">Rewind</button>
+            </div>
+
+            <label class="field">
+              <span>Replay Index</span>
+              <input id="replayIndexInput" type="range" min="20" max="150" value="80" />
+            </label>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Coach</h3>
+            </div>
+            <div id="coachOutput" class="coach-output">Waiting for market context...</div>
+          </section>
+        </aside>
+      </section>
+
+      <section class="middle-grid">
+        <section class="panel">
+          <div class="panel-header">
+            <h3>Achievements</h3>
+          </div>
+          <div id="achievementList" class="card-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h3>Challenges</h3>
+          </div>
+          <div id="challengeList" class="card-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h3>Objectives</h3>
+          </div>
+          <div id="objectiveList" class="card-list"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h3>Session Feed</h3>
+          </div>
+          <div id="eventFeed" class="card-list"></div>
+        </section>
+      </section>
+
+      <section class="lower-grid">
+        <section class="panel">
+          <div class="panel-header">
+            <h3>Trade Log</h3>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Action</th>
+                  <th>Price</th>
+                  <th>P/L</th>
+                </tr>
+              </thead>
+              <tbody id="tradeLogBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="stack-grid">
+          <section class="panel">
+            <div class="panel-header">
+              <h3>Performance</h3>
+            </div>
+
+            <div class="progress-grid">
+              <div class="progress-card">
+                <span>Best Trade</span>
+                <strong id="bestTradeValue">$0.00</strong>
+              </div>
+              <div class="progress-card">
+                <span>Net Realized</span>
+                <strong id="netRealizedValue">$0.00</strong>
+              </div>
+            </div>
+          </section>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
